@@ -31,19 +31,19 @@ def signal_handler(signal, frame):
 def parse(cmus_dict):
     status = {
         "state": cmus_dict["status"],
-        "details": "Not playing",
+        "details": "Not playing!",
         "assets": {
             "large_image": "main_logo"
         }
     }
+
     if cmus_dict["tag"]:
         status["state"] = "{0}".format(cmus_dict["tag"]["title"])
         status.pop("details")
-        if cmus_dict["tag"]["album"]:
-            status["assets"]["large_text"] = "{0}".format(cmus_dict["tag"]["album"])
         if cmus_dict["tag"]["artist"]:
             status["assets"]["small_image"] = "artist_logo"
-            status["assets"]["small_text"] = "{0}".format(cmus_dict["tag"]["artist"])
+            # status["assets"]["small_text"] = "{0}".format(cmus_dict["tag"]["artist"])
+
         if config["start_time"]:
             status["timestamps"] = {
                 "start": int(time.time()) - int(cmus_dict["position"])
@@ -81,5 +81,6 @@ if __name__ == "__main__":
             continue
 
         status = cmus.get_status_dict()
+        print(status)
         rpc.send_rich_presence(parse(status))
-        time.sleep(15)
+        time.sleep(5)
