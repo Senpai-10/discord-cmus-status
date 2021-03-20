@@ -40,9 +40,11 @@ def parse(cmus_dict):
     if cmus_dict["tag"]:
         status["state"] = "{0}".format(cmus_dict["tag"]["title"])
         status.pop("details")
-        if cmus_dict["tag"]["artist"]:
+        try:
             status["assets"]["small_image"] = "artist_logo"
-            # status["assets"]["small_text"] = "{0}".format(cmus_dict["tag"]["artist"])
+            status["assets"]["small_text"] = "{0}".format(cmus_dict["tag"]["artist"])
+        except KeyError:
+            ...
 
         if config["start_time"]:
             status["timestamps"] = {
